@@ -10,7 +10,7 @@ tgtImg = Image.open("small_target.jpg")
 srcImg.show()
 tgtImg.show()
 
-#image data - use size method to get automatically
+#image data
 width = srcImg.size[0]
 height = srcImg.size[1]
 
@@ -19,12 +19,11 @@ srcPix = srcImg.load()
 tgtPix = tgtImg.load()
 
 #Get histograms of the images
-#only take the first 245 values for now since they're B&W
+#only take the first 256 values for now since they're B&W
 srcHist = srcImg.histogram()[:256]
 tgtHist = tgtImg.histogram()[:256]
 
 #make value list
-srcValuelist = []
 pxlsByVal = []
 for _ in range(256):
     pxlsByVal.append([])
@@ -67,7 +66,7 @@ def change_one_pixel(curVal, tgtVal):
     #update pixel list
     pxlsByVal[curVal].remove(chosenPxl)
     pxlsByVal[tgtVal].append(chosenPxl)
-    return
+    
 
 #change one pixel function
 def change_one_pixel_smooth(curVal, tgtVal):
@@ -77,17 +76,16 @@ def change_one_pixel_smooth(curVal, tgtVal):
             change_one_pixel(curVal+inc,curVal+inc+1)
         else:
             change_one_pixel(curVal-inc,curVal-inc-1)
-    return
 
 
 #move pixels in excess bins to deficit bins
 for curValue in excessBins:
     if curValue % 5 == 0:
-        print "On value ", curValue
+        print "On value", curValue
     excess = srcHist[curValue] - tgtHist[curValue]
     for _ in range(excess):
         tgtValue = deficitBins[0]
-        change_one_pixel(curValue,tgtValue)
+        change_one_pixel_smooth(curValue,tgtValue)
         if srcHist[tgtValue] == tgtHist[tgtValue]:
             deficitBins = deficitBins[1:]
 
