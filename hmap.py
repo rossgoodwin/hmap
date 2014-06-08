@@ -23,28 +23,18 @@ tgtPix = tgtImg.load()
 srcHist = srcImg.histogram()[:256]
 tgtHist = tgtImg.histogram()[:256]
 
-#make superlists
-srcSuperlist = []
-tgtSuperlist = []
+#make value list
+srcValuelist = []
+pxlsByVal = [ ]
+for _ in range(256):
+    pxlsByVal.append([])
+
 for i in range(width):
     for j in range(height):
         value = srcPix[i, j][0]
-        srcSuperlist.append([(i, j), value, srcHist[value]])
-for i in range(width):
-    for j in range(height):
-        value = tgtPix[i, j]
-        tgtSuperlist.append([(i, j), value, tgtHist[value]])
+        pxlsByVal[value].append((i,j))
 
-#get pixel coordinates for color values
-def findPixels(value):
-    pixels = []
-    for x in srcSuperlist:
-        if x[1] == value:
-            pixels.append(x[0])
-        else:
-            continue
-    return pixels
-        
+print "pxlsByVal created"
 
 equalBins = []
 excessBins = []
@@ -59,18 +49,24 @@ for i in range(len(srcHist)):
     elif srcHist[i] == tgtHist[i]:
         equalBins.append(i)
 
+print "list of excess and deficit values created."
+
 #change one pixel function
 def change_one_pixel(curVal, tgtVal):
     #find a pixel to change
-    candidatePxls = findPixels(curVal)
+    candidatePxls = pxlsByVal[curVal]
     chosenPxl = random.choice(candidatePxls)
 
     #change the pixel
-    srcPix[chosenPxl] = tgtVal
+    srcPix[chosenPxl] = (tgtVal, tgtVal, tgtVal)
 
     #update the histograms
     srcHist[curVal] -= 1
     srcHist[tgtVal] += 1
+    
+    #update pixel list
+    pxlsByVal[curVal].remove(chosenPxl)
+    pxlsByVal[tgtVal].append(chosenPxl)
     return
 
 
