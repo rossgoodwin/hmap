@@ -1,6 +1,7 @@
 # image histogram remapping
 
 from PIL import Image
+import random
 
 #image data
 width = 1600
@@ -38,7 +39,9 @@ for i in range(len(srcHist)):
         equalBins.append(i)
 
 #change one pixel function
-def change_one_pixel(cv, tv):
+def change_one_pixel(curVal, tgtVal):
+    candidatePxls = srcPxlList[curVal]
+    chosenPxl = candidatePxls[random.randint(0,len(candidatePxls)-1)]
     pass
 
 
