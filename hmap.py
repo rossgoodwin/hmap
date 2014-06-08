@@ -3,13 +3,13 @@
 from PIL import Image
 import random
 
-#image data
+#image data - use size method to get automatically
 width = 1600
 height = 1280
 
 #load our source and target images
-srcImg = Image.open("source.gif")
-tgtImg = Image.open("taget.gif")
+srcImg = Image.open("one.jpg")
+tgtImg = Image.open("two.jpg")
 
 #load pixel maps
 srcPix = srcImg.load()
@@ -19,6 +19,18 @@ tgtPix = tgtImg.load()
 #only take the first 245 values for now since they're B&W
 srcHist = srcImg.histogram()[:256]
 tgtHist = tgtImg.histogram()[:256]
+
+#make superlist
+superlist = []
+for i in range(width):
+    for j in range(height):
+        value = srcPix[i, j][0]
+        superlist.append([i, j, value, srcHist[value]])
+for i in range(width):
+    for j in range(height):
+        value = tgtPix[i, j][0]
+        superlist.append([i, j, value, tgtHist[value]])
+        
 
 #make map of image w/ histogram data
 for x in range(len(srcPix)):
