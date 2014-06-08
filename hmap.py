@@ -25,7 +25,7 @@ tgtHist = tgtImg.histogram()[:256]
 
 #make value list
 srcValuelist = []
-pxlsByVal = [ ]
+pxlsByVal = []
 for _ in range(256):
     pxlsByVal.append([])
 
