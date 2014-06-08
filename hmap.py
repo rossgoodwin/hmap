@@ -3,16 +3,16 @@
 from PIL import Image
 import random
 
-#image data - use size method to get automatically
-width = 1600
-height = 1280
-
 #load our source and target images
-srcImg = Image.open("one.jpg")
-tgtImg = Image.open("two.jpg")
+srcImg = Image.open("small_src.jpg")
+tgtImg = Image.open("small_target.jpg")
 
 srcImg.show()
 tgtImg.show()
+
+#image data - use size method to get automatically
+width = srcImg.size[0]
+height = srcImg.size[1]
 
 #load pixel maps
 srcPix = srcImg.load()
@@ -63,15 +63,27 @@ def change_one_pixel(curVal, tgtVal):
     #update the histograms
     srcHist[curVal] -= 1
     srcHist[tgtVal] += 1
-    
+
     #update pixel list
     pxlsByVal[curVal].remove(chosenPxl)
     pxlsByVal[tgtVal].append(chosenPxl)
     return
 
+#change one pixel function
+def change_one_pixel_smooth(curVal, tgtVal):
+    Nincrements = abs(curVal - tgtVal)
+    for inc in reversed(range(Nincrements)):
+        if tgtVal > curVal:
+            change_one_pixel(curVal+inc,curVal+inc+1)
+        else:
+            change_one_pixel(curVal-inc,curVal-inc-1)
+    return
+
 
 #move pixels in excess bins to deficit bins
 for curValue in excessBins:
+    if curValue % 5 == 0:
+        print "On value ", curValue
     excess = srcHist[curValue] - tgtHist[curValue]
     for _ in range(excess):
         tgtValue = deficitBins[0]
