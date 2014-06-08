@@ -52,8 +52,16 @@ for i in range(len(srcHist)):
 
 #change one pixel function
 def change_one_pixel(curVal, tgtVal):
-    candidatePxls = srcPxlList[curVal]
-    chosenPxl = candidatePxls[random.randint(0,len(candidatePxls)-1)]
+    #find a pixel to change
+    candidatePxls = pxlByValue[curVal]
+    chosenPxl = random.choice(candidatePxls)
+
+    #change the pixel
+    srcPix(chosenPxl) = tgtVal
+
+    #update the histograms
+    srcHist[curVal] -= 1
+    srcHist[tgtVal] += 1
     pass
 
 
