@@ -1,11 +1,14 @@
 # image histogram remapping
 
+from sys import argv
 from PIL import Image
 import random
 
+script, source_image, target_image = argv
+
 #load our source and target images
-srcImg = Image.open("small_src.jpg")
-tgtImg = Image.open("small_target.jpg")
+srcImg = Image.open(source_image)
+tgtImg = Image.open(target_image)
 
 srcImg.show()
 tgtImg.show()
@@ -33,7 +36,7 @@ for i in range(width):
         value = srcPix[i, j][0]
         pxlsByVal[value].append((i,j))
 
-print "pxlsByVal created"
+print "pxlsByVal created..."
 
 equalBins = []
 excessBins = []
@@ -48,7 +51,7 @@ for i in range(len(srcHist)):
     elif srcHist[i] == tgtHist[i]:
         equalBins.append(i)
 
-print "list of excess and deficit values created."
+print "list of excess and deficit values created..."
 
 #change one pixel function
 def change_one_pixel(curVal, tgtVal):
