@@ -20,16 +20,27 @@ tgtPix = tgtImg.load()
 srcHist = srcImg.histogram()[:256]
 tgtHist = tgtImg.histogram()[:256]
 
-#make superlist
-superlist = []
+#make superlists
+srcSuperlist = []
+tgtSuperlist = []
 for i in range(width):
     for j in range(height):
         value = srcPix[i, j][0]
-        superlist.append([i, j, value, srcHist[value]])
+        srcSuperlist.append([(i, j), value, srcHist[value]])
 for i in range(width):
     for j in range(height):
         value = tgtPix[i, j][0]
-        superlist.append([i, j, value, tgtHist[value]])
+        tgtSuperlist.append([(i, j), value, tgtHist[value]])
+
+#get pixel coordinates for color values
+def findPixels(value):
+    pixels = []
+    for x in srcSuperlist:
+        if x[1] == value:
+            pixels.append(x[0])
+        else:
+            continue
+    return pixels
         
 
 #make map of image w/ histogram data
