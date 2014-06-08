@@ -11,6 +11,9 @@ height = 1280
 srcImg = Image.open("one.jpg")
 tgtImg = Image.open("two.jpg")
 
+srcImg.show()
+tgtImg.show()
+
 #load pixel maps
 srcPix = srcImg.load()
 tgtPix = tgtImg.load()
@@ -29,7 +32,7 @@ for i in range(width):
         srcSuperlist.append([(i, j), value, srcHist[value]])
 for i in range(width):
     for j in range(height):
-        value = tgtPix[i, j][0]
+        value = tgtPix[i, j]
         tgtSuperlist.append([(i, j), value, tgtHist[value]])
 
 #get pixel coordinates for color values
@@ -41,11 +44,6 @@ def findPixels(value):
         else:
             continue
     return pixels
-        
-
-#make map of image w/ histogram data
-for x in range(len(srcPix)):
-    for y in range(len(srcPix[0])):
         
 
 equalBins = []
@@ -64,23 +62,25 @@ for i in range(len(srcHist)):
 #change one pixel function
 def change_one_pixel(curVal, tgtVal):
     #find a pixel to change
-    candidatePxls = pxlByValue[curVal]
+    candidatePxls = findPixels(curVal)
     chosenPxl = random.choice(candidatePxls)
 
     #change the pixel
-    srcPix(chosenPxl) = tgtVal
+    srcPix[chosenPxl] = tgtVal
 
     #update the histograms
     srcHist[curVal] -= 1
     srcHist[tgtVal] += 1
-    pass
+    return
 
 
 #move pixels in excess bins to deficit bins
 for curValue in excessBins:
     excess = srcHist[curValue] - tgtHist[curValue]
     for _ in range(excess):
-        targetValue = deficitBins[0]
+        tgtValue = deficitBins[0]
         change_one_pixel(curValue,tgtValue)
         if srcHist[tgtValue] == tgtHist[tgtValue]:
             deficitBins = deficitBins[1:]
+
+srcImg.show()
