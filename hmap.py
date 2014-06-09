@@ -75,7 +75,8 @@ def change_one_pixel(curVal, tgtVal):
 def change_one_pixel_smooth(curVal, tgtVal):
     Nincrements = abs(curVal - tgtVal)
     for inc in reversed(range(Nincrements)):
-        if tgtVal > curVal:                                 # This part was throwing IndexErrors, so I adjusted it
+    # This part was throwing IndexErrors with certain images, so I adjusted it. Not sure if this is the best fix though!
+        if tgtVal > curVal:
             try:
                 change_one_pixel(curVal+inc,curVal+inc+1)
             except IndexError:
