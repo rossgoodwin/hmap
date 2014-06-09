@@ -54,49 +54,58 @@ for i in range(len(srcHist)):
 print "list of excess and deficit values created..."
 
 #change one pixel function
-def change_one_pixel(curVal, tgtVal):
+def change_n_pixels(curVal, tgtVal, nToChange):
     #find a pixel to change
     candidatePxls = pxlsByVal[curVal]
-    chosenPxl = random.choice(candidatePxls)
+    chosenPxls = random.sample(candidatePxls, nToChange)
 
     #change the pixel
-    srcPix[chosenPxl] = (tgtVal, tgtVal, tgtVal)
+    for pxl in chosenPxls:
+        srcPix[pxl] = (tgtVal, tgtVal, tgtVal)
+        #update pixel list
+        pxlsByVal[curVal].remove(pxl)
+        pxlsByVal[tgtVal].append(pxl)
 
     #update the histograms
-    srcHist[curVal] -= 1
-    srcHist[tgtVal] += 1
+    srcHist[curVal] -= nToChange
+    srcHist[tgtVal] += nToChange
 
-    #update pixel list
-    pxlsByVal[curVal].remove(chosenPxl)
-    pxlsByVal[tgtVal].append(chosenPxl)
-    
+
 
 #change one pixel function
-def change_one_pixel_smooth(curVal, tgtVal):
+def change_n_pixels_smooth(curVal, tgtVal, nToChange):
     Nincrements = abs(curVal - tgtVal)
-    for inc in reversed(range(Nincrements)):
-    # This part was throwing IndexErrors with certain images, so I adjusted it. Not sure if this is the best fix though!
+    for inc in range(Nincrements):
+        # This part was throwing IndexErrors, so I adjusted it
         if tgtVal > curVal:
             try:
-                change_one_pixel(curVal+inc,curVal+inc+1)
+                change_n_pixels(curVal+inc, curVal+inc+1, nToChange)
             except IndexError:
                 pass
         else:
             try:
-                change_one_pixel(curVal-inc,curVal-inc-1)
+                change_n_pixels(curVal-inc, curVal-inc-1, nToChange)
             except IndexError:
                 pass
 
 
 #move pixels in excess bins to deficit bins
 for curValue in excessBins:
-    if curValue % 5 == 0:
-        print "On value", curValue
     excess = srcHist[curValue] - tgtHist[curValue]
-    for _ in range(excess):
+    if curValue % 5 == 0:
+        print "On value", curValue, "with", excess, "excess pixels"
+    while excess > 0:
         tgtValue = deficitBins[0]
-        change_one_pixel_smooth(curValue,tgtValue)
-        if srcHist[tgtValue] == tgtHist[tgtValue]:
+        deficit = tgtHist[tgtValue] - srcHist[tgtValue]
+        if excess > deficit :
+            nToMove = excess - deficit
             deficitBins = deficitBins[1:]
+        else:
+            nToMove = excess
+            if deficit == excess:
+                deficitBins = deficitBins[1:]
+
+        change_n_pixels_smooth(curValue,tgtValue,nToMove)
+        excess -= nToMove
 
 srcImg.show()
