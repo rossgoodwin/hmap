@@ -3,6 +3,7 @@
 from __future__ import print_function
 from sys import argv
 from PIL import Image
+import collections
 import random
 
 script, source_image, target_image = argv
@@ -36,9 +37,9 @@ for i in range(width):
 
 print("pxlsByVal created...")
 
-equalBins = []
-excessBins = []
-deficitBins = []
+equalBins = collections.deque()
+excessBins = collections.deque()
+deficitBins = collections.deque()
 
 #sort bins into lists
 for i, _ in enumerate(srcHist):
@@ -100,11 +101,11 @@ for curValue in excessBins:
         deficit = tgtHist[tgtValue] - srcHist[tgtValue]
         if excess > deficit:
             nToMove = excess - deficit
-            deficitBins = deficitBins[1:]
+            deficitBins.popleft()
         else:
             nToMove = excess
             if deficit == excess:
-                deficitBins = deficitBins[1:]
+                deficitBins.popleft()
 
         change_n_pixels_smooth(curValue, tgtValue, nToMove)
         excess -= nToMove

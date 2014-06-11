@@ -3,6 +3,7 @@
 from __future__ import print_function
 from sys import argv
 from PIL import Image
+import collections
 import random
 
 script, source_image, target_image = argv
@@ -56,17 +57,17 @@ for i in range(width):
 
 print("pxlsByVal created...")
 
-equalBins_R = []
-excessBins_R = []
-deficitBins_R = []
+equalBins_R = collections.deque()
+excessBins_R = collections.deque()
+deficitBins_R = collections.deque()
 
-equalBins_G = []
-excessBins_G = []
-deficitBins_G = []
+equalBins_G = collections.deque()
+excessBins_G = collections.deque()
+deficitBins_G = collections.deque()
 
-equalBins_B = []
-excessBins_B = []
-deficitBins_B = []
+equalBins_B = collections.deque()
+excessBins_B = collections.deque()
+deficitBins_B = collections.deque()
 
 #sort bins into lists
 for i, _ in enumerate(srcHist_R):
@@ -224,11 +225,11 @@ for curValue in excessBins_R:
         deficit = tgtHist_R[tgtValue] - srcHist_R[tgtValue]
         if excess > deficit :
             nToMove = excess - deficit
-            deficitBins_R = deficitBins_R[1:]
+            deficitBins_R.popleft()
         else:
             nToMove = excess
             if deficit == excess:
-                deficitBins_R = deficitBins_R[1:]
+                deficitBins_R.popleft()
 
         change_n_pixels_smooth_R(curValue,tgtValue,nToMove)
         excess -= nToMove
@@ -244,11 +245,11 @@ for curValue in excessBins_G:
         deficit = tgtHist_G[tgtValue] - srcHist_G[tgtValue]
         if excess > deficit :
             nToMove = excess - deficit
-            deficitBins_G = deficitBins_G[1:]
+            deficitBins_G.popleft()
         else:
             nToMove = excess
             if deficit == excess:
-                deficitBins_G = deficitBins_G[1:]
+                deficitBins_G.popleft()
 
         change_n_pixels_smooth_G(curValue,tgtValue,nToMove)
         excess -= nToMove
@@ -264,11 +265,11 @@ for curValue in excessBins_B:
         deficit = tgtHist_B[tgtValue] - srcHist_B[tgtValue]
         if excess > deficit :
             nToMove = excess - deficit
-            deficitBins_B = deficitBins_B[1:]
+            deficitBins_B.popleft()
         else:
             nToMove = excess
             if deficit == excess:
-                deficitBins_B = deficitBins_B[1:]
+                deficitBins_B.popleft()
 
         change_n_pixels_smooth_B(curValue,tgtValue,nToMove)
         excess -= nToMove
