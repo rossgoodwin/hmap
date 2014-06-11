@@ -1,7 +1,7 @@
 Hmap
 ====
 
-An image histogram remapping script written in Python 2.7 by Anthony Kesich and Ross Goodwin. Changes source image so that source image's histogram matches target image's histogram. Requires PIL/Pillow:
+An image histogram remapping script written in Python 2.7 by [Anthony Kesich](http://akesich.com) and [Ross Goodwin](http://rossgoodwin.com). Changes source image so that source image's histogram matches target image's histogram. Requires PIL/Pillow:
 
     $ sudo pip install Pillow
 
