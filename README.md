@@ -10,3 +10,12 @@ To run Hmap, cd into the directory where the hmap.py (for black and white images
 Example:
 
     $ sudo python hmap_c.py source_image.jpg target_image.jpg
+
+Source Image:
+![Source Image](http://imgur.com/MGCUWZo.jpg "Source Image")
+
+Target Image:
+![Target Image](http://imgur.com/vuGrjAY.jpg "Target Image")
+
+Result:
+![Result](http://imgur.com/KavoDjf.jpg "Result")
