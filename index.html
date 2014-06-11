@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Hmap : Image histogram remapping" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Hmap</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/rossgoodwin/hmap">View on GitHub</a>
+
+          <h1 id="project_title">Hmap</h1>
+          <h2 id="project_tagline">Image histogram remapping</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/rossgoodwin/hmap/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/rossgoodwin/hmap/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="hmap" class="anchor" href="#hmap"><span class="octicon octicon-link"></span></a>Hmap</h1>
+
+<p>An image histogram remapping script written in Python 2.7 by <a href="http://akesich.com">Anthony Kesich</a> and <a href="http://rossgoodwin.com">Ross Goodwin</a>. Changes source image so that source image's histogram matches target image's histogram. Requires PIL/Pillow:</p>
+
+<pre><code>$ sudo pip install Pillow
+</code></pre>
+
+<p>To run Hmap, cd into the directory where the hmap.py (for black and white images) or hmap_c.py (for color images) is located. Ensure source and target images have the same height and width dimensions (in pixels), and place them in the directory. Run the script with 2 additional arguments (source and target image files) as shown in the following example.</p>
+
+<p>Example:</p>
+
+<pre><code>$ sudo python hmap_c.py source_image.jpg target_image.jpg
+</code></pre>
+
+<p>Source Image:</p>
+
+<p><img src="http://imgur.com/MGCUWZo.jpg" alt="Source Image" title="Source Image"></p>
+
+<p>Target Image:</p>
+
+<p><img src="http://imgur.com/vuGrjAY.jpg" alt="Target Image" title="Target Image"></p>
+
+<p>Result:</p>
+
+<p><img src="http://imgur.com/KavoDjf.jpg" alt="Result" title="Result"></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Hmap maintained by <a href="https://github.com/rossgoodwin">rossgoodwin</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
