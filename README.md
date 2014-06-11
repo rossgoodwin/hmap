@@ -11,11 +11,16 @@ Example:
 
     $ sudo python hmap_c.py source_image.jpg target_image.jpg
 
+
 Source Image:
+
 ![Source Image](http://imgur.com/MGCUWZo.jpg "Source Image")
 
+
 Target Image:
+
 ![Target Image](http://imgur.com/vuGrjAY.jpg "Target Image")
+
 
 Result:
 
