@@ -14,8 +14,7 @@ srcImg.show()
 tgtImg.show()
 
 #image data
-width = srcImg.size[0]
-height = srcImg.size[1]
+width, height = srcImg.size
 
 #load pixel maps
 srcPix = srcImg.load()
@@ -33,34 +32,28 @@ srcHist_B = srcImg.histogram()[512:]
 tgtHist_B = tgtImg.histogram()[512:]
 
 #make value lists
-pxlsByVal_R = []
-for _ in range(256):
-    pxlsByVal_R.append([])
+pxlsByVal_R = [set() for _ in range(256)]
 
 for i in range(width):
     for j in range(height):
         value = srcPix[i, j][0]
-        pxlsByVal_R[value].append((i,j))
+        pxlsByVal_R[value].add((i,j))
 
-pxlsByVal_G = []
-for _ in range(256):
-    pxlsByVal_G.append([])
+pxlsByVal_G = [set() for _ in range(256)]
 
 for i in range(width):
     for j in range(height):
         value = srcPix[i, j][1]
-        pxlsByVal_G[value].append((i,j))
+        pxlsByVal_G[value].add((i,j))
 
-pxlsByVal_B = []
-for _ in range(256):
-    pxlsByVal_B.append([])
+pxlsByVal_B = [set() for _ in range(256)]
 
 for i in range(width):
     for j in range(height):
         value = srcPix[i, j][2]
-        pxlsByVal_B[value].append((i,j))
+        pxlsByVal_B[value].add((i,j))
 
-print "pxlsByVal created..."
+print("pxlsByVal created...")
 
 equalBins_R = []
 excessBins_R = []
@@ -75,31 +68,44 @@ excessBins_B = []
 deficitBins_B = []
 
 #sort bins into lists
-for i in range(256):
-    if srcHist_R[i] < tgtHist_R[i]:
+for i, _ in enumerate(srcHist_R):
+    src_i = srcHist_R[i]
+    tgt_i = tgtHist_R[i]
+    if src_i < tgt_i:
         deficitBins_R.append(i)
-    elif srcHist_R[i] > tgtHist_R[i]:
+    elif src_i > tgt_i:
         excessBins_R.append(i)
-    elif srcHist_R[i] == tgtHist_R[i]:
+    else:
         equalBins_R.append(i)
         
-for i in range(256):
-    if srcHist_G[i] < tgtHist_G[i]:
+for i, _ in enumerate(srcHist_G):
+    src_i = srcHist_G[i]
+    tgt_i = tgtHist_G[i]
+    if src_i < tgt_i:
         deficitBins_G.append(i)
-    elif srcHist_G[i] > tgtHist_G[i]:
+    elif src_i > tgt_i:
         excessBins_G.append(i)
-    elif srcHist_G[i] == tgtHist_G[i]:
+    else:
         equalBins_G.append(i)
 
-for i in range(256):
-    if srcHist_B[i] < tgtHist_B[i]:
+for i, _ in enumerate(srcHist_B):
+    src_i = srcHist_B[i]
+    tgt_i = tgtHist_B[i]
+    if src_i < tgt_i:
         deficitBins_B.append(i)
-    elif srcHist_B[i] > tgtHist_B[i]:
+    elif src_i > tgt_i:
         excessBins_B.append(i)
-    elif srcHist_B[i] == tgtHist_B[i]:
+    else:
         equalBins_B.append(i)
 
-print "list of excess and deficit values created..."
+print("For R\n#equal bins: %s\t#excess bins: %s\t#deficit bins: %s" % tuple(
+    map(len, (equalBins_R, excessBins_R, deficitBins_R))))
+
+print("For G\n#equal bins: %s\t#excess bins: %s\t#deficit bins: %s" % tuple(
+    map(len, (equalBins_G, excessBins_G, deficitBins_G))))
+
+print("For B\n#equal bins: %s\t#excess bins: %s\t#deficit bins: %s" % tuple(
+    map(len, (equalBins_B, excessBins_B, deficitBins_B))))
 
 
 #change one pixel function - R
@@ -113,7 +119,7 @@ def change_n_pixels_R(curVal, tgtVal, nToChange):
         srcPix[pxl] = (tgtVal, srcPix[pxl][1], srcPix[pxl][2])
         #update pixel list
         pxlsByVal_R[curVal].remove(pxl)
-        pxlsByVal_R[tgtVal].append(pxl)
+        pxlsByVal_R[tgtVal].add(pxl)
 
     #update the histograms
     srcHist_R[curVal] -= nToChange
@@ -131,7 +137,7 @@ def change_n_pixels_G(curVal, tgtVal, nToChange):
         srcPix[pxl] = (srcPix[pxl][0], tgtVal, srcPix[pxl][2])
         #update pixel list
         pxlsByVal_G[curVal].remove(pxl)
-        pxlsByVal_G[tgtVal].append(pxl)
+        pxlsByVal_G[tgtVal].add(pxl)
 
     #update the histograms
     srcHist_G[curVal] -= nToChange
@@ -149,7 +155,7 @@ def change_n_pixels_B(curVal, tgtVal, nToChange):
         srcPix[pxl] = (srcPix[pxl][0], srcPix[pxl][1], tgtVal)
         #update pixel list
         pxlsByVal_B[curVal].remove(pxl)
-        pxlsByVal_B[tgtVal].append(pxl)
+        pxlsByVal_B[tgtVal].add(pxl)
 
     #update the histograms
     srcHist_B[curVal] -= nToChange
@@ -211,7 +217,7 @@ def change_n_pixels_smooth_B(curVal, tgtVal, nToChange):
 for curValue in excessBins_R:
     excess = srcHist_R[curValue] - tgtHist_R[curValue]
     if curValue % 5 == 0:
-        print "On R value", curValue, "with", excess, "excess pixels"
+        print("On R value", curValue, "with", excess, "excess pixels")
     while excess > 0:
         tgtValue = deficitBins_R[0]
         deficit = tgtHist_R[tgtValue] - srcHist_R[tgtValue]
@@ -231,7 +237,7 @@ for curValue in excessBins_R:
 for curValue in excessBins_G:
     excess = srcHist_G[curValue] - tgtHist_G[curValue]
     if curValue % 5 == 0:
-        print "On G value", curValue, "with", excess, "excess pixels"
+        print("On G value", curValue, "with", excess, "excess pixels")
     while excess > 0:
         tgtValue = deficitBins_G[0]
         deficit = tgtHist_G[tgtValue] - srcHist_G[tgtValue]
@@ -251,7 +257,7 @@ for curValue in excessBins_G:
 for curValue in excessBins_B:
     excess = srcHist_B[curValue] - tgtHist_B[curValue]
     if curValue % 5 == 0:
-        print "On B value", curValue, "with", excess, "excess pixels"
+        print("On B value", curValue, "with", excess, "excess pixels")
     while excess > 0:
         tgtValue = deficitBins_B[0]
         deficit = tgtHist_B[tgtValue] - srcHist_B[tgtValue]
