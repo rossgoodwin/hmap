@@ -221,7 +221,10 @@ for curValue in excessBins_R:
     if curValue % 5 == 0:
         print("On R value", curValue, "with", excess, "excess pixels")
     while excess > 0:
-        tgtValue = deficitBins_R[0]
+        if deficitBins_R == collections.deque([]):
+            break
+        else:
+            tgtValue = deficitBins_R[0]
         deficit = tgtHist_R[tgtValue] - srcHist_R[tgtValue]
         if excess > deficit :
             nToMove = excess - deficit
@@ -241,7 +244,10 @@ for curValue in excessBins_G:
     if curValue % 5 == 0:
         print("On G value", curValue, "with", excess, "excess pixels")
     while excess > 0:
-        tgtValue = deficitBins_G[0]
+        if deficitBins_G == collections.deque([]):
+            break
+        else:
+            tgtValue = deficitBins_G[0]
         deficit = tgtHist_G[tgtValue] - srcHist_G[tgtValue]
         if excess > deficit :
             nToMove = excess - deficit
@@ -261,7 +267,10 @@ for curValue in excessBins_B:
     if curValue % 5 == 0:
         print("On B value", curValue, "with", excess, "excess pixels")
     while excess > 0:
-        tgtValue = deficitBins_B[0]
+        if deficitBins_B == collections.deque([]):
+            break
+        else:
+            tgtValue = deficitBins_B[0]
         deficit = tgtHist_B[tgtValue] - srcHist_B[tgtValue]
         if excess > deficit :
             nToMove = excess - deficit

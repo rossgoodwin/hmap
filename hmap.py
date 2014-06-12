@@ -97,7 +97,10 @@ for curValue in excessBins:
     if curValue % 5 == 0:
         print("On value", curValue, "with", excess, "excess pixels")
     while excess > 0:
-        tgtValue = deficitBins[0]
+        if deficitBins == collections.deque([]):
+            break
+        else:
+            tgtValue = deficitBins[0]
         deficit = tgtHist[tgtValue] - srcHist[tgtValue]
         if excess > deficit:
             nToMove = excess - deficit
