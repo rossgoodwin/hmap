@@ -12,6 +12,9 @@ Example:
     $ python hmap_c.py source_image.jpg target_image.jpg
 
 
+hmap.py
+=======
+
 Source Image:
 
 ![Source Image](http://imgur.com/MGCUWZo.jpg "Source Image")
@@ -27,3 +30,21 @@ Result:
 ![Result](http://imgur.com/KavoDjf.jpg "Result")
 
 *Photographs by Ansel Adams*
+
+
+hmap_c.py
+=========
+
+Color Source Image:
+
+![Color Source Image](http://imgur.com/2KzkN8p.jpg "Color Source Image")
+
+Color Target Image:
+
+![Target Image](http://imgur.com/VyaVBkQ.jpg "Target Image")
+
+Result:
+
+![Result](http://imgur.com/kiNBR57.jpg "Result")
+
+*Photographs by Steve McCurry*
