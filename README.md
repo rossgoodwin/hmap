@@ -25,3 +25,5 @@ Target Image:
 Result:
 
 ![Result](http://imgur.com/KavoDjf.jpg "Result")
+
+*Photographs by Ansel Adams*
